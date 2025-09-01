@@ -1,0 +1,275 @@
+:root{
+  --bg: #0b0f14;
+  --surface: #121825;
+  --surface-2: #0f1522;
+  --text: #e5e7eb;
+  --muted: #9aa3b2;
+  --blue: #3b82f6;   /* acento */
+  --blue-2: #60a5fa;
+  --green: #22c55e;
+  --red: #ef4444;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0; padding:0; background:var(--bg); color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+a{ color:var(--blue-2); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+.app-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 22px; background:linear-gradient(180deg, #0d1320, #0a0f1a);
+  border-bottom:1px solid #0f1a2b;
+  position:sticky; top:0; z-index:10;
+}
+
+.brand{ font-weight:700; letter-spacing:.3px; }
+.nav{ display:flex; gap:16px; }
+.nav-link{
+  padding:8px 12px; border-radius:10px; background:transparent; color:var(--text);
+}
+.nav-link.active, .nav-link:hover{
+  background:rgba(59,130,246,.12); outline:1px solid rgba(59,130,246,.25);
+}
+
+.container{ max-width:1100px; margin:28px auto; padding:0 18px; }
+
+.cards{
+  display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:18px;
+}
+@media (max-width: 720px){
+  .cards{ grid-template-columns: 1fr; }
+}
+
+.card{
+  background:linear-gradient(180deg, var(--surface), var(--surface-2));
+  border:1px solid #0f1a2b; border-radius:16px; padding:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.card-title{ color:var(--muted); font-size:.95rem; margin-bottom:8px; }
+.money{ font-variant-numeric: tabular-nums; font-weight:700; }
+.big{ font-size:2rem; }
+.muted{ color:var(--muted); }
+
+.panel{
+  margin-top:22px; padding:18px; border-radius:16px;
+  background:linear-gradient(180deg, var(--surface), var(--surface-2));
+  border:1px solid #0f1a2b; box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.panel-header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; margin-bottom:12px;
+}
+.panel h2{ margin:0; font-size:1.15rem; }
+.top-space{ margin-top:10px; }
+
+.btn{
+  background:rgba(59,130,246,.15); color:var(--text);
+  border:1px solid rgba(59,130,246,.35);
+  padding:8px 12px; border-radius:10px; cursor:pointer;
+}
+.btn:hover{ background:rgba(59,130,246,.25); }
+
+.app-footer{
+  margin:36px auto 24px; text-align:center; color:var(--muted);
+  border-top:1px solid #0f1a2b; padding-top:16px; max-width:1100px;
+}
+
+/* ---------- Chart sizing (altura fija + scroll horizontal) ---------- */
+.chart-wrap{
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 12px;
+}
+
+.chart-inner{
+  /* Altura fija de la gráfica (ajústala si deseas) */
+  height: 360px;
+  min-width: 900px; /* ancho base para pantallas normales */
+}
+
+#igChart{
+  /* El canvas ocupa el 100% del contenedor sin crecer en altura */
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ---------- Forms & Tables ---------- */
+.form-grid{
+  display:grid; gap:12px;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+@media (max-width: 900px){
+  .form-grid{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px){
+  .form-grid{ grid-template-columns: 1fr; }
+}
+.input, .select{
+  width:100%; padding:10px 12px; border-radius:10px;
+  border:1px solid rgba(59,130,246,.35);
+  background:rgba(59,130,246,.08); color:var(--text);
+}
+.input::placeholder{ color:var(--muted); }
+.actions{ display:flex; gap:10px; align-items:center; }
+
+.table{
+  width:100%; border-collapse:separate; border-spacing:0 10px; margin-top:14px;
+}
+.table thead th{
+  text-align:left; color:var(--muted); font-weight:600; font-size:.9rem; padding:8px 10px;
+}
+.table tbody tr{
+  background:linear-gradient(180deg, var(--surface), var(--surface-2));
+  border:1px solid #0f1a2b;
+}
+.table tbody td{
+  padding:10px 10px; border-top:1px solid #0f1a2b; border-bottom:1px solid #0f1a2b;
+}
+.table .money{ font-weight:700; }
+.badge{
+  display:inline-block; padding:4px 8px; border-radius:999px;
+  background:rgba(59,130,246,.18); border:1px solid rgba(59,130,246,.35);
+  font-size:.8rem;
+}
+.row-actions{ display:flex; gap:8px; }
+.btn-danger{
+  background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.35);
+}
+.btn-danger:hover{ background:rgba(239,68,68,.25); }
+.subtle{
+  color:var(--muted); font-size:.9rem;
+}
+
+/* ---------- Category chips ---------- */
+.cat-list{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.cat-chip{
+  background:rgba(59,130,246,.12); border:1px solid rgba(59,130,246,.35);
+  padding:4px 8px; border-radius:999px; font-size:.8rem;
+}
+
+/* ---------- Refuerzo por si faltaba en algún file ---------- */
+.nav-link{
+  padding:8px 12px; border-radius:10px; background:transparent; color:var(--text);
+}
+.nav-link.active, .nav-link:hover{
+  background:rgba(59,130,246,.12); outline:1px solid rgba(59,130,246,.25);
+}
+
+/* ---------- Refuerzo por si faltaba en algún file ---------- */
+.nav-link{
+  padding:8px 12px; border-radius:10px; background:transparent; color:var(--text);
+}
+.nav-link.active, .nav-link:hover{
+  background:rgba(59,130,246,.12); outline:1px solid rgba(59,130,246,.25);
+}
+
+/* ---------- Selects legibles en tema oscuro ---------- */
+html { color-scheme: dark; } /* fuerza UI oscura para controles nativos */
+.select { background: rgba(59,130,246,.10); color: var(--text); }
+.select option { background: #0f1522; color: #e5e7eb; }
+
+/* ---------- Chips de categoría con botón de borrar ---------- */
+.cat-chip{
+  position: relative; padding-right: 18px;
+}
+.cat-chip .x{
+  margin-left:6px; font-weight:700; opacity:.8;
+}
+.cat-chip:hover{
+  cursor: pointer; outline:1px solid rgba(59,130,246,.35);
+}
+
+/* ---------- Layout uniforme de formularios ---------- */
+.form-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  column-gap: 16px;
+  row-gap: 14px;
+  align-items: end;
+}
+@media (max-width: 1280px){
+  .form-grid{ grid-template-columns: repeat(3, minmax(220px,1fr)); }
+}
+@media (max-width: 1024px){
+  .form-grid{ grid-template-columns: repeat(2, minmax(220px,1fr)); }
+}
+@media (max-width: 640px){
+  .form-grid{ grid-template-columns: 1fr; }
+}
+
+/* ---------- Etiquetas tipo <label class="subtle">Texto + input</label> en columna ---------- */
+label.subtle{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- Botoneras dentro del grid (p. ej. Recalcular) pegadas a la derecha ---------- */
+.form-grid .actions{
+  justify-self: end;
+  align-self: end;
+}
+
+/* ---------- Controles con la misma altura ---------- */
+.input, .select, .btn{
+  min-height: 44px;
+  height: 44px;
+  line-height: 1.2;
+  padding: 10px 12px;
+}
+
+/* ---------- Ajuste visual del botón en panel-headers (p. ej. Aplicar al Dashboard) ---------- */
+.panel-header .panel-actions .btn{ height: 42px; }
+
+/* ---------- Subscripciones (fila ordenada) ---------- */
+#subsList{ margin-top: 10px; }
+.actions .input#subName{ min-width: 40%; }
+.actions .input#subAmt{ min-width: 22%; }
+.actions #addSub{ white-space: nowrap; }
+
+/* ---------- Tabla de Resultados: claves a la izquierda y montos a la derecha ---------- */
+.table td{ vertical-align: middle; }
+.table td.money{
+  text-align: right;
+  font-variant-numeric: tabular-nums; /* alinea dígitos */
+}
+.table tbody tr td:first-child{ width: 60%; }
+.table tbody tr td.money{ width: 40%; }
+
+/* ---------- Un pelín más de separación entre secciones para respiro ---------- */
+.panel{ margin-bottom: 22px; }
+/* ---------- Cards 3-up en desktop ---------- */
+@media (min-width: 1000px){
+  .cards{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+  .cards > .card{
+    max-width: none;
+    width: auto;
+    min-width: 0;
+    height: 100%;
+  }
+}
+@media (max-width: 999px) and (min-width: 640px){
+  .cards{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+@media (max-width: 639px){
+  .cards{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

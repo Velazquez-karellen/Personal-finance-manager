@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ingresos — Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        /* centra texto del botón y alinea con inputs */
+        .btn{ display:inline-flex; align-items:center; justify-content:center; }
+        .actions{ align-items:center; }
+    </style>
+</head>
+<body>
+<header class="app-header">
+    <div class="brand">Personal Finance Manager</div>
+    <nav class="nav">
+        <a class="nav-link" href="./dashboard.html">Dashboard</a>
+        <a class="nav-link active" href="./ingresos.html">Ingresos</a>
+        <a class="nav-link" href="./gastos.html">Gastos</a>
+        <a class="nav-link" href="./ahorros.html">Ahorros</a>
+        <a class="nav-link" href="./importar.html">Importar PDF</a>
+        <a class="nav-link" href="./reportes.html">Reportes</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Añadir ingreso</h2>
+        </div>
+
+        <div class="form-grid">
+            <input id="date" type="date" class="input" />
+            <input id="desc" type="text" class="input" placeholder="Descripción (p. ej. Nómina, transferencia, etc.)" />
+            <input id="amount" type="number" step="0.01" class="input" placeholder="Cantidad (USD)" />
+            <select id="category" class="select"></select>
+        </div>
+
+        <div class="actions" style="margin-top:12px;">
+            <button id="addBtn" class="btn">Añadir ingreso</button>
+            <span class="subtle">Las categorías las manejas tú aquí mismo 👇</span>
+        </div>
+
+        <div style="margin-top:16px;">
+            <div class="panel-header" style="padding:0;">
+                <h3 style="margin:0;">Administrar categorías</h3>
+            </div>
+            <div class="actions">
+                <input id="newCat" class="input" placeholder="Nueva categoría de ingreso (p. ej. Nómina, Transferencia, Reembolso)" />
+                <button id="addCatBtn" class="btn">Agregar categoría</button>
+            </div>
+            <div id="catList" class="cat-list"></div>
+        </div>
+    </section>
+
+    <!-- Tarjeta de total de ingresos -->
+    <section class="panel">
+        <div class="panel-header"><h2>Total de ingresos</h2></div>
+        <div id="incomeTotal" class="money big">$0.00</div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Lista de ingresos</h2>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Cantidad</th><th></th>
+            </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+        </table>
+    </section>
+</main>
+
+<footer class="app-footer">© <span id="year"></span> PFM — MIT License</footer>
+
+<script type="module" src="js/header.js"></script>
+<script type="module" src="js/ingresos.js"></script>
+</body>
+</html>

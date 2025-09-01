@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ahorros — Personal Finance Manager</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<main class="container">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Plan de ahorro y disponibilidad por semestre</h2>
+    </div>
+
+    <div class="form-grid">
+      <label class="subtle">Meses del semestre
+        <input id="months" type="number" class="input" value="6" />
+      </label>
+
+      <label class="subtle">% ahorro (sobre ingresos del semestre)
+        <input id="savePct" type="number" class="input" value="10" />
+      </label>
+
+      <label class="subtle">Hospedaje / mes (USD)
+        <input id="rent" type="number" class="input" value="0" />
+      </label>
+
+      <label class="subtle">Comida / mes (USD)
+        <input id="food" type="number" class="input" value="0" />
+      </label>
+
+      <label class="subtle">Celular / mes (USD)
+        <input id="cell" type="number" class="input" value="0" />
+      </label>
+
+      <label class="subtle">Rango de fechas (opcional) — inicio
+        <input id="dateStart" type="date" class="input" />
+      </label>
+
+      <label class="subtle">Rango de fechas — fin
+        <input id="dateEnd" type="date" class="input" />
+      </label>
+
+      <div class="actions">
+        <button id="recalcBtn" class="btn">Recalcular</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top:18px;">Subscripciones mensuales</h3>
+    <div class="actions">
+      <input id="subName" class="input" placeholder="Nombre (Netflix, iCloud, etc.)" />
+      <input id="subAmt" class="input" type="number" step="0.01" placeholder="Monto mensual (USD)" />
+      <button id="addSub" class="btn">Añadir sub</button>
+    </div>
+    <div id="subsList" style="margin-top:8px;"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Resultado</h2>
+      <div class="panel-actions">
+        <button id="saveCfg" class="btn" style="margin-right:8px;">Guardar configuración</button>
+        <button id="applyBtn" class="btn">Aplicar al Dashboard</button>
+      </div>
+    </div>
+
+    <table class="table">
+      <tbody>
+        <tr><td>Ingresos del semestre (rango aplicado)</td><td id="resIncomeApplied" class="money">$0.00</td></tr>
+        <tr><td>Gastos fijos mensuales</td><td id="resFixedMonthly" class="money">$0.00</td></tr>
+        <tr><td>Gastos fijos del semestre</td><td id="resFixedSemester" class="money">$0.00</td></tr>
+        <tr><td>Ahorro a separar ahora</td><td id="resSavingsNow" class="money">$0.00</td></tr>
+        <tr><td>Disponible total para BP</td><td id="resSafeTotal" class="money">$0.00</td></tr>
+        <tr><td>Disponible por mes</td><td id="resSafePerMonth" class="money">$0.00</td></tr>
+      </tbody>
+    </table>
+
+    <p class="muted" style="margin-top:8px;">
+      Nota: El ahorro del semestre se calcula como <b>% ahorro × ingresos del semestre</b>.
+      Ese total se separa para la cooperativa; el resto es lo disponible para Banco Popular.
+    </p>
+  </section>
+</main>
+
+<footer class="app-footer">© <span id="year"></span> PFM — MIT License</footer>
+
+<script type="module" src="js/header.js"></script>
+<script type="module" src="js/ahorros.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reportes — Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        :root{
+            --brand-bg:#0f1522; --brand-accent:#3b82f6; --ink:#e5e7eb; --muted:#9aa3b2;
+            --card-bg:linear-gradient(180deg,#121825,#0f1522); --line:#0f1a2b;
+            --ink-dark:#0f172a; --muted-dark:#475569; --line-print:#e5e7eb;
+        }
+        .report-wrap{ max-width:1100px; margin:28px auto; padding:0 18px; }
+        .panel{ margin-top:22px; padding:18px; border-radius:16px; background:var(--card-bg); border:1px solid var(--line); box-shadow:0 10px 30px rgba(0,0,0,.25); }
+        .panel-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+        .panel h2{ margin:0; font-size:1.15rem; }
+        .actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+        .btn{ background:rgba(59,130,246,.15); color:var(--ink); border:1px solid rgba(59,130,246,.35); padding:10px 14px; border-radius:10px; cursor:pointer; min-height:44px; }
+        .btn:hover{ background:rgba(59,130,246,.25); }
+        .form-grid{ display:grid; gap:12px; grid-template-columns:repeat(4,minmax(240px,1fr)); align-items:end; }
+        @media(max-width:1024px){ .form-grid{ grid-template-columns:repeat(2,minmax(220px,1fr)); } }
+        @media(max-width:640px){ .form-grid{ grid-template-columns:1fr; } }
+        label.subtle{ display:flex; flex-direction:column; gap:6px; color:var(--muted); }
+        .input{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(59,130,246,.35); background:rgba(59,130,246,.08); color:var(--ink); min-height:44px; }
+
+        .cards4{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+        @media(max-width:900px){ .cards4{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+        @media(max-width:520px){ .cards4{ grid-template-columns:1fr; } }
+        .kpi{ background:var(--card-bg); border:1px solid var(--line); border-radius:14px; padding:14px; }
+        .kpi .label{ color:var(--muted); font-size:.9rem; }
+        .kpi .value{ font-weight:800; font-size:1.35rem; margin-top:6px; font-variant-numeric:tabular-nums; }
+
+        .table{ width:100%; border-collapse:separate; border-spacing:0 10px; margin-top:14px; }
+        .table thead th{ text-align:left; color:var(--muted); font-weight:600; font-size:.9rem; padding:8px 10px; }
+        .table tbody tr{ background:var(--card-bg); border:1px solid var(--line); }
+        .table tbody td{ padding:10px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+        .money{ text-align:right; font-variant-numeric:tabular-nums; font-weight:700; }
+
+        /* ---------- Modo impresión limpio ---------- */
+        .print-header, .print-footer{ display:none; }
+        @media print{
+            @page{ size: Letter; margin: 16mm 14mm; }
+            html,body{ background:#fff; color:var(--ink-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+            /* Ocultar navegación y el generador para que no aparezcan en PDF */
+            .app-header, .app-footer, #panelGenerate { display:none !important; }
+
+            /* Encabezado y pie propios de impresión */
+            .print-header{
+                display:block; position:fixed; top:0; left:0; right:0; padding:8px 0 6px;
+                border-bottom:2px solid var(--line-print); background:#fff;
+            }
+            .ph-inner{ display:flex; justify-content:space-between; align-items:center; font-family:ui-sans-serif,system-ui; }
+            .ph-brand{ font-weight:800; font-size:14px; color:var(--ink-dark); }
+            .ph-meta{ text-align:right; font-size:12px; color:var(--muted-dark); }
+
+            .print-footer{
+                display:block; position:fixed; bottom:0; left:0; right:0; border-top:1px solid var(--line-print);
+                padding-top:6px; font-size:11px; color:var(--muted-dark); background:#fff;
+            }
+            .pf-inner{ display:flex; justify-content:space-between; }
+
+            /* Paneles y tarjetas claros para impresión */
+            .panel{ background:#fff !important; border:0 !important; box-shadow:none !important; break-inside:avoid; page-break-inside:avoid; }
+            .kpi{ background:#fff !important; border:1px solid var(--line-print) !important; }
+            .kpi .label{ color:#334155 !important; }
+            .kpi .value{ color:#0f172a !important; }
+
+            .table thead th{ color:#334155 !important; }
+            .table tbody tr{ background:#fff !important; border:1px solid var(--line-print) !important; }
+            .table tbody td{ border-color:var(--line-print) !important; }
+
+            .report-wrap{ margin:0 auto; padding:0; }
+            main{ padding-top:64px; padding-bottom:36px; }
+        }
+    </style>
+</head>
+<body>
+<!-- Encabezado especial para impresión -->
+<div class="print-header">
+    <div class="report-wrap ph-inner">
+        <div class="ph-brand">Personal Finance Manager</div>
+        <div class="ph-meta">
+            <div id="ph-title">Reporte financiero</div>
+            <div id="ph-range">—</div>
+        </div>
+    </div>
+</div>
+
+<header class="app-header">
+    <div class="brand">Personal Finance Manager</div>
+    <nav class="nav">
+        <a class="nav-link" href="./dashboard.html">Dashboard</a>
+        <a class="nav-link" href="./ingresos.html">Ingresos</a>
+        <a class="nav-link" href="./gastos.html">Gastos</a>
+        <a class="nav-link" href="./ahorros.html">Ahorros</a>
+        <a class="nav-link" href="./importar.html">Importar PDF</a>
+        <a class="nav-link active" href="./reportes.html">Reportes</a>
+    </nav>
+</header>
+
+<main class="report-wrap">
+    <section id="panelGenerate" class="panel">
+        <div class="panel-header"><h2>Generar reporte</h2></div>
+        <div class="form-grid">
+            <label class="subtle">Desde <input id="fromDate" type="date" class="input" /></label>
+            <label class="subtle">Hasta <input id="toDate" type="date" class="input" /></label>
+            <label class="subtle">Título del reporte <input id="title" class="input" value="Resumen financiero del semestre" /></label>
+            <div class="actions">
+                <button id="preview" type="button" class="btn">Previsualizar totales</button>
+                <span class="subtle" style="margin-left:6px;">Para PDF usa <b>Ctrl + P</b>.</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header"><h2>Resumen</h2></div>
+        <div id="cards" class="cards4"></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header"><h2>Totales</h2></div>
+        <table class="table">
+            <thead><tr><th>Ingresos por fuente</th><th class="money">Monto</th></tr></thead>
+            <tbody id="tIncome"></tbody>
+        </table>
+        <table class="table" style="margin-top:8px">
+            <thead><tr><th>Gastos por categoría</th><th class="money">Monto</th></tr></thead>
+            <tbody id="tExpense"></tbody>
+        </table>
+
+    </section>
+</main>
+
+<!-- Pie especial para impresión -->
+<div class="print-footer">
+    <div class="report-wrap pf-inner">
+        <div>© <span id="yearPrint"></span> PFM — MIT License</div>
+        <div>Página <span class="pagenum"></span></div>
+    </div>
+</div>
+
+<footer class="app-footer">© <span id="year"></span> PFM — MIT License</footer>
+
+<script type="module" src="js/header.js"></script>
+<script src="js/reportes.v2.js?v=1"></script>
+
+<script>
+    (function(){
+        /* ---------- Claves usadas por ingresos/gastos/ahorros ---------- */
+        const KEYS = {
+            incomes:  "pfm.transactions.income",
+            expenses: "pfm.transactions.expense",
+            last:     "pfm.ahorros.lastComputed",
+            balSave:  "pfm.balance.savings",
+            cfg:      "pfm.ahorros.config",
+        };
+
+        const $ = id => document.getElementById(id);
+        const money = n => (Number(n)||0).toLocaleString("es-PR",{style:"currency",currency:"USD"});
+        const readJSON = (k,fb)=>{ try{const v=localStorage.getItem(k); return v?JSON.parse(v):fb;}catch{return fb;} };
+
+        function parseDate(s){ return s ? new Date(s+"T00:00:00") : null; }
+        function inRange(tx, a, b){
+            const d = tx.date ? new Date(tx.date+"T00:00:00") : null;
+            if(a && d && d < a) return false;
+            if(b && d && d > b) return false;
+            return true;
+        }
+        function getRange(){
+            const a = $("fromDate")?.value ? parseDate($("fromDate").value) : null;
+            const b = $("toDate")?.value ? parseDate($("toDate").value) : null;
+            return {a,b};
+        }
+
+        /* ---------- Detecta transferencias para excluirlas de ingresos/gastos ---------- */
+        function isTransfer(tx){
+            const k = String(tx.kind || "").toLowerCase();
+            const c = String(tx.category || "").toLowerCase();
+            const d = String(tx.desc || tx.description || "").toLowerCase();
+            return k === "transfer" || c === "transferencia" || /transf|transfer|athm/.test(d);
+        }
+
+        function calc(){
+            const {a,b} = getRange();
+
+            // SOLO lo guardado por ingresos.html / gastos.html, sin transferencias
+            const incomes  = (readJSON(KEYS.incomes, [])  || []).filter(t => inRange(t,a,b) && !isTransfer(t));
+            const expenses = (readJSON(KEYS.expenses, []) || []).filter(t => inRange(t,a,b) && !isTransfer(t));
+
+            const incomeByCat = {};
+            const expenseByCat = {};
+            let totalIncome=0, totalExpense=0;
+
+            incomes.forEach(t=>{
+                const amt = Math.abs(Number(t.amount)||0);
+                totalIncome += amt;
+                const c = t.category || "Sin categoría";
+                incomeByCat[c] = (incomeByCat[c]||0) + amt;
+            });
+            expenses.forEach(t=>{
+                const amt = Math.abs(Number(t.amount)||0);
+                totalExpense += amt;
+                const c = t.category || "Sin categoría";
+                expenseByCat[c] = (expenseByCat[c]||0) + amt;
+            });
+
+            // Ahorro mostrado: aplicado desde Ahorros si existe; si no, estimación por %
+            const last = readJSON(KEYS.last, null);
+            const applied = Number(localStorage.getItem(KEYS.balSave)||0);
+            const cfg = readJSON(KEYS.cfg, null);
+            let savings = applied || (last?.savingsNow || 0);
+            if(!savings && cfg?.savePct) savings = totalIncome * (cfg.savePct/100);
+
+            const net = totalIncome - totalExpense;
+            return { incomeByCat, expenseByCat, totalIncome, totalExpense, net, savings };
+        }
+
+        function render(){
+            const d = calc();
+
+            // Meta para impresión (encabezado superior)
+            const title = $("title")?.value || "Reporte financiero";
+            const from  = $("fromDate")?.value || "—";
+            const to    = $("toDate")?.value   || "—";
+            $("ph-title").textContent = title;
+            $("ph-range").textContent = "Rango: " + from + " a " + to;
+
+            // KPIs
+            const cards = [
+                {label:"Total ingresos",             val:d.totalIncome},
+                {label:"Total gastos",               val:d.totalExpense},
+                {label:"Ahorro (aplicado/estimado)", val:d.savings},
+                {label:"Balance neto",               val:d.net}
+            ];
+            const cwrap = $("cards"); cwrap.innerHTML = "";
+            cards.forEach(k=>{
+                const el = document.createElement("div");
+                el.className = "kpi";
+                el.innerHTML = '<div class="label">'+k.label+'</div><div class="value">'+money(k.val)+'</div>';
+                cwrap.appendChild(el);
+            });
+
+            // Tablas
+            function fill(id, obj){
+                const tb = $(id);
+                const keys = Object.keys(obj).sort((a,b)=>obj[b]-obj[a]);
+                tb.innerHTML = keys.length
+                    ? keys.map(k=>`<tr><td>${k}</td><td class="money">${money(obj[k])}</td></tr>`).join("")
+                    : `<tr><td>(Sin datos)</td><td class="money">$0.00</td></tr>`;
+            }
+            fill("tIncome", d.incomeByCat);
+            fill("tExpense", d.expenseByCat);
+        }
+
+        function init(){
+            const y = $("year"); if(y) y.textContent = new Date().getFullYear();
+            const yp = $("yearPrint"); if(yp) yp.textContent = new Date().getFullYear();
+
+            render(); // arranque
+            $("preview")?.addEventListener("click", render);
+        }
+        window.addEventListener("DOMContentLoaded", init);
+    })();
+</script>
+</body>
+</html>
