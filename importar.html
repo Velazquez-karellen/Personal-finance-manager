@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Importar e-statements — Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- PDF.js (lib + worker) -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.10.111/build/pdf.min.js"></script>
+    <script>
+        if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.10.111/build/pdf.worker.min.js";
+        }
+    </script>
+
+    <!-- Tesseract.js (OCR) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
+</head>
+<body>
+<header class="app-header">
+    <div class="brand">Personal Finance Manager</div>
+    <nav class="nav">
+        <a class="nav-link" href="./dashboard.html">Dashboard</a>
+        <a class="nav-link" href="./ingresos.html">Ingresos</a>
+        <a class="nav-link" href="./gastos.html">Gastos</a>
+        <a class="nav-link" href="./ahorros.html">Ahorros</a>
+        <a class="nav-link active" href="./importar.html">Importar PDF</a>
+        <a class="nav-link" href="./reportes.html">Reportes</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Importar e-statements (PDF)</h2>
+            <div class="panel-actions">
+                <button id="clearDraft" class="btn btn-danger">Vaciar Draft</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <input id="file" type="file" accept="application/pdf" class="input" />
+            <button id="parseBtn" class="btn">Leer PDF</button>
+        </div>
+
+        <p class="muted">
+            Soporta estados con líneas tipo: <i>fecha — descripción — monto</i>.
+            Si tu formato cambia, usa el panel de debug para afinar el parser.
+        </p>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header"><h2>Debug de extracción</h2></div>
+        <div class="actions">
+            <span id="dbgInfo" class="subtle">Sin datos</span>
+            <button id="downloadTxt" class="btn">Descargar .txt</button>
+        </div>
+        <textarea id="dbgText" class="input" style="width:100%;height:160px;margin-top:10px;"
+                  placeholder="Vista previa del texto extraído..."></textarea>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Draft de transacciones (editar antes de aceptar)</h2>
+            <div class="panel-actions">
+                <button id="acceptAll" class="btn">Aceptar y guardar</button>
+                <button id="deleteSelected" class="btn btn-danger" style="margin-left:8px;">Borrar seleccionados</button>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Categoría</th>
+                <th>Monto</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="draftRows"></tbody>
+        </table>
+    </section>
+</main>
+
+<footer class="app-footer">© <span id="year"></span> PFM — MIT License</footer>
+
+<!-- Marca activa en el header si usas header.js en otras páginas -->
+<script type="module" src="js/header.js"></script>
+<!-- Lógica de importación (standalone) -->
+<script type="module" src="js/importar.js"></script>
+</body>
+</html>

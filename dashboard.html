@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard — Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header class="app-header">
+    <div class="brand">Personal Finance Manager</div>
+    <nav class="nav">
+        <a class="nav-link active" href="./dashboard.html">Dashboard</a>
+        <a class="nav-link" href="./ingresos.html">Ingresos</a>
+        <a class="nav-link" href="./gastos.html">Gastos</a>
+        <a class="nav-link" href="./ahorros.html">Ahorros</a>
+        <a class="nav-link" href="./importar.html">Importar PDF</a>
+        <a class="nav-link" href="./reportes.html">Reportes</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="cards">
+        <article class="card">
+            <div class="card-title">Ahorros (Cooperativa)</div>
+            <div id="savingsAmount" class="money big">$0.00</div>
+            <div class="muted">Total ahorrado</div>
+        </article>
+
+        <article class="card">
+            <div class="card-title">Dinero para gastar (Banco Popular)</div>
+            <div id="safeToSpendAmount" class="money big">$0.00</div>
+            <div class="muted">Ingresos – Gastos – Ahorros</div>
+        </article>
+
+        <article class="card">
+            <div class="card-title">Asignación mensual (A)</div>
+            <div id="monthlyAssignAmount" class="money big">$0.00</div>
+            <div class="muted" data-alloc-explain>A = Banco ÷ 6 meses</div>
+            <div class="top-space">
+                <button class="btn" id="configA">Configurar</button>
+            </div>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Ingresos vs Gastos vs Ahorros</h2>
+        </div>
+        <div class="chart-wrap"><div class="chart-inner"><canvas id="igChart"></canvas></div></div>
+        <p class="muted top-space">
+            Nota: los cálculos de arriba usan lo guardado en Ingresos y Gastos. El ahorro aplicado proviene de Ahorros.
+        </p>
+    </section>
+</main>
+
+<footer class="app-footer">© <span id="year"></span> PFM — MIT License</footer>
+
+<!-- en dashboard.html ya lo tienes así -->
+<script src="js/dashboard.v3.js?v=2025-09-01-002"></script>
+<!-- Header (si lo usas como módulo) -->
+<script type="module" src="js/header.js"></script>
+</body>
+</html>
