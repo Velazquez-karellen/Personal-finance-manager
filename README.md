@@ -35,5 +35,16 @@ No hay build. Basta con abrir los HTML en el navegador (idealmente con un servid
 - **Módulos ES con error**: confirma que los `import` usan rutas válidas y relativas.
 - **No aparecen mis datos**: recuerda que todo vive en el `localStorage` del dominio; si cambias de navegador o limpias storage, empezarás en blanco.
 
-## Licencia
-MIT
+
+## Instalar como App (PWA)
+PFM es una PWA.  
+- **Android/Chrome/Edge/Brave**: Menú → “Instalar app” (o usa el botón “Instalar” que aparece).
+- **iOS/Safari**: Compartir → “Añadir a pantalla de inicio”.
+
+### Técnico
+- `manifest.webmanifest` define nombre, iconos y `start_url`.
+- `sw.js` precachea HTML/CSS/JS/íconos y usa cache dinámico para recursos externos (pdf.js/tesseract).
+- `offline.html` se muestra si no hay conexión.
+- `js/pwa.js` registra el SW y gestiona el prompt de instalación.
+
+> Para forzar actualización de la app tras cambios estáticos, incrementa `VERSION` en `sw.js` y vuelve a desplegar.
